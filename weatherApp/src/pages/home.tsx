@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import SearchOptions from "./searchOptions";
+import { setSearchData } from "../store/slices/searchSlice";
 // async function getMap(layer: string,z: string,x: string,y:string) {
 //   const response = await fetch(
 //     `https://tile.openweathermap.org/map/${layer}/${z}/${x}/${y}.png?appid=${
@@ -13,7 +14,10 @@ import SearchOptions from "./searchOptions";
 
 //   return imgUrl;
 // }
-
+const dispatch = useDispatch();
+function handleSet(value: string) {
+  dispatch(setSearchData(value));
+}
 export default function Home() {
   //   const [mapUrl, setMapUrl] = useState<string | null>(null);
 
@@ -31,9 +35,13 @@ export default function Home() {
             type="text"
             onInput={(evt) => setInputValue(evt.target.value)}
           />
-          <Link to="/search">
-          <button>SEARCH</button>
-          </Link>
+          {/* <Link to="/search"> */}
+          <button
+            onClick={() => /*handleSet(inputValue)*/ console.log("dzialar")}
+          >
+            SEARCH
+          </button>
+          {/* </Link> */}
         </form>
       </div>
       <div>map</div>
