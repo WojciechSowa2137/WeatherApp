@@ -14,18 +14,18 @@ import { setSearchData } from "../store/slices/searchSlice";
 
 //   return imgUrl;
 // }
-const dispatch = useDispatch();
-function handleSet(value: string) {
-  dispatch(setSearchData(value));
-}
+
 export default function Home() {
   //   const [mapUrl, setMapUrl] = useState<string | null>(null);
 
   //   useEffect(() => {
   //     getMap('temp_new','2','1','1').then(setMapUrl);
   //   }, []);
+  const dispatch = useDispatch();
+  function handleSet(value: string) {
+    dispatch(setSearchData(value));
+  }
   const [inputValue, setInputValue] = useState("");
-  console.log(inputValue);
 
   return (
     <>
@@ -33,15 +33,18 @@ export default function Home() {
         <form action="">
           <input
             type="text"
+            placeholder="lat lon or city name"
             onInput={(evt) => setInputValue(evt.target.value)}
           />
-          {/* <Link to="/search"> */}
-          <button
-            onClick={() => /*handleSet(inputValue)*/ console.log("dzialar")}
-          >
-            SEARCH
-          </button>
-          {/* </Link> */}
+          <Link to="/search">
+            <button
+              onClick={() => {
+                handleSet(inputValue);
+              }}
+            >
+              SEARCH
+            </button>
+          </Link>
         </form>
       </div>
       <div>map</div>

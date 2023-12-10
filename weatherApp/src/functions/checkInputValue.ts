@@ -4,7 +4,5 @@ const hasNumbers = (value: string) => {
 
   return !STRING_NUMBER_REGEXP.test(value);
 };
-export function check(value:string){
-
-}
+export default hasNumbers
 

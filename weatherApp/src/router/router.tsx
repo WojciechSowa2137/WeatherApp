@@ -8,15 +8,17 @@ import SearchOptions from "../pages/searchOptions";
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Home />
-    },{
-        path: "/weather",
-        element: < WeatherDetails/>
+        element: <Home />,
     },
     {
       path: "/search",
-      element: < SearchOptions/>
+      element: < SearchOptions/>,
+      children: [],
     },
+    {
+      path: "/search/:weatherId",
+      element: < WeatherDetails/>
+    }
   ]);
   
   function Router() {
