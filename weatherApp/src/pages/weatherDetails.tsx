@@ -2,7 +2,55 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import splitCord from "../functions/splitCord";
 
-async function getWeatherInfo(lat: string, lon: string) {
+interface WeatherData {
+  coord: {
+    lon: number;
+    lat: number;
+  };
+  weather: {
+    id: number;
+    main: string;
+    description: string;
+    icon: string;
+  }[];
+  base: string;
+  main: {
+    temp: number;
+    feels_like: number;
+    temp_min: number;
+    temp_max: number;
+    pressure: number;
+    humidity: number;
+    sea_level: number;
+    grnd_level: number;
+  };
+  visibility: number;
+  wind: {
+    speed: number;
+    deg: number;
+    gust: number;
+  };
+  rain?: {
+    "1h": number;
+  };
+  clouds: {
+    all: number;
+  };
+  dt: number;
+  sys: {
+    type: number;
+    id: number;
+    country: string;
+    sunrise: number;
+    sunset: number;
+  };
+  timezone: number;
+  id: number;
+  name: string;
+  cod: number;
+}
+
+async function getWeatherInfo(lat: string, lon: string): Promise<WeatherData> {
   try {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
@@ -12,7 +60,7 @@ async function getWeatherInfo(lat: string, lon: string) {
     if (!response.ok) {
       throw new Error("Something is wrong with WeatherDetails fetch");
     }
-    const data = await response.json();
+    const data: WeatherData = await response.json();
     return data;
   } catch (error) {
     throw new Error("Something is wrong with WeatherDetails fetch");
@@ -20,11 +68,11 @@ async function getWeatherInfo(lat: string, lon: string) {
 }
 
 function useWeatherInfo() {
-  const [info, setInfo] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const { weatherId } = useParams();
-  const cords = splitCord(weatherId);
+  const [info, setInfo] = useState<WeatherData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+  const { weatherId } = useParams<{ weatherId?: string }>();
+  const cords = splitCord(weatherId || "");
   useEffect(() => {
     getWeatherInfo(cords[0], cords[1])
       .then((data) => {
@@ -45,16 +93,16 @@ export default function WeatherDetails() {
   return (
     <>
       {isLoading && <p>Loading...</p>}
-      {isError && <p>Wersja robacza trza zmienić</p>}
+      {isError && <p>Something went wrong</p>}
       {!isLoading && !isError && (
-        <div key={info.id}>
-          <span>{info.name}</span>
-          <span>{info.main.temp}°C</span>
-          <span>{info.weather[0].description}</span>
+        <div key={info?.id}>
+          <span>{info?.name}</span>
+          <span>{info?.main.temp}°C</span>
+          <span>{info?.weather[0].description}</span>
           <span>
-            {info.main.temp_min}°C TO {info.main.temp_max}°C
+            {info?.main.temp_min}°C TO {info?.main.temp_max}°C
           </span>
-          <span>Wind speed {info.wind.speed}m/s</span>
+          <span>Wind speed {info?.wind.speed}m/s</span>
         </div>
       )}
     </>

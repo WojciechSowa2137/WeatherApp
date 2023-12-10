@@ -4,6 +4,7 @@ import { RootState } from "../store/store";
 import useCitiesByName from "../functions/getCitiesByName";
 import hasNumbers from "../functions/checkInputValue";
 import { Link, useNavigate } from "react-router-dom";
+
 const SearchOptions: React.FC = () => {
   const inputValue = useSelector((state: RootState) => state.search.data);
   if (!hasNumbers(inputValue)) {
@@ -11,7 +12,7 @@ const SearchOptions: React.FC = () => {
     return (
       <>
         {isLoading && <p>Loading...</p>}
-        {isError && <p>Wersja robacza trza zmienić Error</p>}
+        {isError && <p>Something went wrong</p>}
         {!isLoading &&
           !isError &&
           cities.map((city, index) => (

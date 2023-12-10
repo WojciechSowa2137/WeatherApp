@@ -1,25 +1,41 @@
 import { useState, useEffect } from "react";
 
-async function getCitiesByName(city: string) {
+interface City {
+  name: string;
+  local_names: Record<string, string>;
+  lat: number;
+  lon: number;
+  country: string;
+  state: string;
+}
+
+
+async function getCitiesByName(city: string):Promise<City[]> {
   try {
     const response = await fetch(
       `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${import.meta.env.VITE_API_KEY
       }`
     );
     if (!response.ok) {
-      throw new Error("Something is wrong with WeatherDetails fetch");
+      throw new Error("Something is wrong with Cities fetch");
     }
-    const data = await response.json();
+    const data: City[] = await response.json();
     return data;
   } catch (error) {
-    throw new Error("Something is wrong with WeatherDetails fetch");
+    throw new Error("Something is wrong with Cities fetch");
   }
 }
 
- export default function useCitiesByName(city: string) {
-  const [cities, setCities] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+interface CitiesByNameProps {
+  cities: City[];
+  isError: boolean;
+  isLoading: boolean;
+}
+
+ export default function useCitiesByName(city: string): CitiesByNameProps {
+  const [cities, setCities] = useState<City[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
   useEffect(() => {
     getCitiesByName(city)
       .then((data) => {
