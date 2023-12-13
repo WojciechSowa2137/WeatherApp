@@ -13,8 +13,10 @@ const SearchOptions: React.FC = () => {
       <>
         {isLoading && <p>Loading...</p>}
         {isError && <p>Something went wrong</p>}
+        {cities.length === 0 &&  !isLoading && !isError && <p>No matching location found</p>}
         {!isLoading &&
           !isError &&
+          !(cities.length === 0) &&
           cities.map((city, index) => (
             <div key={index}>
               <Link to={`/search/${city.lat + "kkk" + city.lon}`}>
@@ -22,6 +24,7 @@ const SearchOptions: React.FC = () => {
               </Link>
             </div>
           ))}
+          
       </>
     );
   } else {
