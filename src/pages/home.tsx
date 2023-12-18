@@ -12,7 +12,9 @@ import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
 import { MapContainer, TileLayer, Marker, useMap, Popup } from "react-leaflet";
+import L from "leaflet";
 
+// Styles
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -39,30 +41,73 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Home() {
   const dispatch = useDispatch();
+  const [inputValue, setInputValue] = useState<string>("");
+
+  // Function to dispatch search data
   function handleSet(value: string) {
     dispatch(setSearchData(value));
   }
 
+  // Interface for mouse position
   interface mousePosition {
     lat: number;
     lng: number;
   }
 
-  const [inputValue, setInputValue] = useState<string>("");
-  const [position, setPosition] = useState<mousePosition>({ lat: 0, lng: 0 });
-
+  // Component for getting coordinates from map click
   function GetCoordinates() {
     const map = useMap();
+    const [position, setPosition] = useState<mousePosition | null>(null);
 
     useEffect(() => {
       if (!map) return;
 
-      map.on("click", (e) => {
-        setPosition(e.latlng);
+      const info = L.DomUtil.create("div", "legend");
+
+      const PositionControl = L.Control.extend({
+        options: {
+          position: "bottomleft",
+        },
+
+        onAdd: function () {
+          info.textContent = "Click on the map";
+          return info;
+        },
       });
+
+      const positionControl = new PositionControl();
+      positionControl.addTo(map);
+
+      const handleMapClick = (e: any) => {
+        const { lat, lng } = e.latlng;
+        setPosition(e.latlng);
+        info.textContent = `${lat}, ${lng}`;
+        console.log(e);
+      };
+
+      map.on("click", handleMapClick);
+
+      return () => {
+        map.off("click", handleMapClick);
+        map.removeControl(positionControl);
+      };
     }, [map]);
 
-    return null;
+    return position ? (
+      <Marker position={position}>
+        <Popup>
+          <Link to="/search">
+            <Button
+              onClick={() => {
+                handleSet(`${position.lat} ${position.lng}`);
+              }}
+            >
+              GET
+            </Button>
+          </Link>
+        </Popup>
+      </Marker>
+    ) : null;
   }
 
   return (
@@ -109,19 +154,6 @@ export default function Home() {
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           <GetCoordinates />
-          <Marker position={position}>
-            <Popup>
-              <Link to="/search">
-                <Button
-                  onClick={() => {
-                    handleSet(`${position.lat} ${position.lng}`);
-                  }}
-                >
-                  GET
-                </Button>
-              </Link>
-            </Popup>
-          </Marker>
         </MapContainer>
       </div>
     </>

@@ -1,6 +1,13 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import splitCord from "../functions/splitCord";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 
 interface WeatherData {
   coord: {
@@ -87,24 +94,60 @@ function useWeatherInfo() {
   }, []);
   return { info, isError, isLoading };
 }
+
 export default function WeatherDetails() {
   const { info, isError, isLoading } = useWeatherInfo();
-  console.log(info);
+
   return (
     <>
-      {isLoading && <p>Loading...</p>}
-      {isError && <p>Something went wrong</p>}
-      {!isLoading && !isError && (
-        <div key={info?.id}>
-          <span>{info?.name}</span>
-          <span>{info?.main.temp}°C</span>
-          <span>{info?.weather[0].description}</span>
-          <span>
-            {info?.main.temp_min}°C TO {info?.main.temp_max}°C
-          </span>
-          <span>Wind speed {info?.wind.speed}m/s</span>
-        </div>
-      )}
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
+              Weather App
+            </Typography>
+            <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} color="white">
+              {info?.name}
+            </Typography>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{ flexGrow: 1 }}
+                color="white"
+              >
+                HOME
+              </Typography>
+            </Link>
+          </Toolbar>
+        </AppBar>
+      </Box>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        {isLoading && <CircularProgress style={{ fontSize: 50 }} />}
+        {isError && <p style={{ fontSize: 50 }}>Something went wrong</p>}
+        {!isLoading && !isError && (
+          <div key={info?.id} style={{ textAlign: "center", fontSize: 30 }}>
+            <Typography variant="body1">{info?.name}</Typography>
+            <Typography variant="body1">{info?.main.temp}°C</Typography>
+            <Typography variant="body1">
+              {info?.weather[0].description}
+            </Typography>
+            <Typography variant="body1">
+              {info?.main.temp_min}°C to {info?.main.temp_max}°C
+            </Typography>
+            <Typography variant="body1">
+              Wind speed {info?.wind.speed}m/s
+            </Typography>
+          </div>
+        )}
+      </div>
     </>
   );
 }
