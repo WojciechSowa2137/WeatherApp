@@ -133,16 +133,20 @@ export default function WeatherDetails() {
         {isLoading && <CircularProgress style={{ fontSize: 50 }} />}
         {isError && <p style={{ fontSize: 50 }}>Something went wrong</p>}
         {!isLoading && !isError && (
-          <div key={info?.id} style={{ textAlign: "center", fontSize: 30 }}>
-            <Typography variant="body1">{info?.name}</Typography>
-            <Typography variant="body1">{info?.main.temp}°C</Typography>
-            <Typography variant="body1">
+          <div key={info?.id} style={{ textAlign: "center" }}>
+            <Typography variant="body1" style={{ fontSize: "4rem" }}>
+              {info?.name}
+            </Typography>
+            <Typography variant="body1" style={{ fontSize: "4rem" }}>
+              {info?.main.temp}°C
+            </Typography>
+            <Typography variant="body1" style={{ fontSize: "4rem" }}>
               {info?.weather[0].description}
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" style={{ fontSize: "4rem" }}>
               {info?.main.temp_min}°C to {info?.main.temp_max}°C
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" style={{ fontSize: "4rem" }}>
               Wind speed {info?.wind.speed}m/s
             </Typography>
           </div>
