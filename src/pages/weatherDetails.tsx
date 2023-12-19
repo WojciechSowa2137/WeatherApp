@@ -130,8 +130,19 @@ export default function WeatherDetails() {
           height: "100vh",
         }}
       >
-        {isLoading && <CircularProgress style={{ fontSize: 50 }} />}
-        {isError && <p style={{ fontSize: 50 }}>Something went wrong</p>}
+        {isLoading && (
+          <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+        )}
+        {isError && <p>Something went wrong</p>}
         {!isLoading && !isError && (
           <div key={info?.id} style={{ textAlign: "center" }}>
             <Typography variant="body1" style={{ fontSize: "4rem" }}>

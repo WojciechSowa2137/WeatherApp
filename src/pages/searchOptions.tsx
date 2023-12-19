@@ -4,6 +4,7 @@ import { RootState } from "../store/store";
 import useCitiesByName from "../functions/getCitiesByName";
 import hasNumbers from "../functions/checkInputValue";
 import { Link, useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -55,7 +56,18 @@ const SearchOptions: React.FC = () => {
           </AppBar>
         </Box>
 
-        {isLoading && <p>Loading...</p>}
+        {isLoading && (
+          <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+        )}
         {isError && <p>Something went wrong</p>}
         {cities.length === 0 && !isLoading && !isError && (
           <p>No matching location found</p>
