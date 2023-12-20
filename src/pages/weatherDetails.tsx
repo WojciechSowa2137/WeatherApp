@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import splitCord from "../functions/splitCord";
 import {
@@ -132,17 +132,30 @@ export default function WeatherDetails() {
       >
         {isLoading && (
           <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <CircularProgress />
-        </Box>
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
         )}
-        {isError && <p>Something went wrong</p>}
+        {isError && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <Typography variant="h1" color="white">
+              Something went wrong
+            </Typography>
+          </Box>
+        )}
         {!isLoading && !isError && (
           <div key={info?.id} style={{ textAlign: "center" }}>
             <Typography variant="body1" style={{ fontSize: "4rem" }}>

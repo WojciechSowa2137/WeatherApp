@@ -58,25 +58,49 @@ const SearchOptions: React.FC = () => {
 
         {isLoading && (
           <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <CircularProgress />
-        </Box>
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
         )}
-        {isError && <p>Something went wrong</p>}
+        {isError && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <Typography variant="h1" color="white">
+              Something went wrong
+            </Typography>
+          </Box>
+        )}
         {cities.length === 0 && !isLoading && !isError && (
-          <p>No matching location found</p>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <Typography variant="h1" color="white">
+              No matching location found
+            </Typography>
+          </Box>
         )}
 
         {!isLoading && !isError && cities.length > 0 && (
           <List
             sx={{
-              bgcolor: "background.paper",
+              bgcolor: "black",
               margin: "auto",
               width: "20%",
               padding: "10px",
@@ -90,8 +114,11 @@ const SearchOptions: React.FC = () => {
             {cities.map((city, index) => (
               <div key={index}>
                 <Link to={`/search/${city.lat + "kkk" + city.lon}`}>
-                  <ListItem button>
-                    <ListItemText primary={city.name} />
+                  <ListItem>
+                    <ListItemText
+                      primary={city.name}
+                      style={{ color: "white", textAlign: "center" }}
+                    />
                   </ListItem>
                 </Link>
               </div>
