@@ -11,8 +11,17 @@ import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button } from "@mui/material";
-import { MapContainer, TileLayer, Marker, useMap, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMap,
+  Popup,
+  LayersControl,
+} from "react-leaflet";
 import L from "leaflet";
+
+const { BaseLayer } = LayersControl;
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -41,20 +50,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function Home() {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState<string>("");
-
   function handleSet(value: string) {
     dispatch(setSearchData(value));
   }
-
   interface mousePosition {
     lat: number;
     lng: number;
   }
-
   function GetCoordinates() {
     const map = useMap();
     const [position, setPosition] = useState<mousePosition | null>(null);
-
     useEffect(() => {
       if (!map) return;
 
@@ -88,7 +93,6 @@ export default function Home() {
         map.removeControl(positionControl);
       };
     }, [map]);
-
     return position ? (
       <Marker position={position}>
         <Popup>
@@ -147,9 +151,17 @@ export default function Home() {
           center={[52, 21]}
           zoom={10}
           style={{ height: "calc(100vh - 80px)", width: "100%" }}
+          // whenCreated={}
         >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <GetCoordinates />
+          <LayersControl>
+            <BaseLayer
+              checked
+              name="OpenStreetMap"
+              children={undefined}
+            ></BaseLayer>
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+            <GetCoordinates />
+          </LayersControl>
         </MapContainer>
       </div>
     </>
