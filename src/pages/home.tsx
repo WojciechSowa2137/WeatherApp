@@ -14,7 +14,6 @@ import { Button } from "@mui/material";
 import { MapContainer, TileLayer, Marker, useMap, Popup } from "react-leaflet";
 import L from "leaflet";
 
-// Styles
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -43,18 +42,15 @@ export default function Home() {
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState<string>("");
 
-  // Function to dispatch search data
   function handleSet(value: string) {
     dispatch(setSearchData(value));
   }
 
-  // Interface for mouse position
   interface mousePosition {
     lat: number;
     lng: number;
   }
 
-  // Component for getting coordinates from map click
   function GetCoordinates() {
     const map = useMap();
     const [position, setPosition] = useState<mousePosition | null>(null);
@@ -125,7 +121,7 @@ export default function Home() {
             </Typography>
             <Search>
               <StyledInputBase
-                placeholder="lat lon or city name"
+                placeholder="[lat lon] or [city name]"
                 inputProps={{ "aria-label": "search" }}
                 onInput={(evt) =>
                   setInputValue((evt.target as HTMLInputElement).value)
