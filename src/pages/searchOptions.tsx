@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
 import { RootState } from "../store/store";
+
 import useCitiesByName from "../functions/getCitiesByName";
 import hasNumbers from "../functions/checkInputValue";
-import { Link, useNavigate } from "react-router-dom";
+
 import CircularProgress from "@mui/material/CircularProgress";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
